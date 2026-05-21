@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="KomunitasKampus.API/KomunitasKampus.API.csproj" />
+  <Project Path="KomunitasKampus.Application/KomunitasKampus.Application.csproj" />
+  <Project Path="KomunitasKampus.Domain/KomunitasKampus.Domain.csproj" />
+  <Project Path="KomunitasKampus.Infrastructure/KomunitasKampus.Infrastructure.csproj" />
+</Solution>

@@ -1,0 +1,6 @@
+@KomunitasKampus.API_HostAddress = http://localhost:5029
+
+GET {{KomunitasKampus.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
