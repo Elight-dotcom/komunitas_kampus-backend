@@ -1,5 +1,5 @@
 using FluentValidation;
-using KomunitasKampus.Domain.Repositories;
+using KomunitasKampus.Domain.Interfaces;
 
 namespace KomunitasKampus.Application.Features.Auth.Commands.RegisterOrganization;
 

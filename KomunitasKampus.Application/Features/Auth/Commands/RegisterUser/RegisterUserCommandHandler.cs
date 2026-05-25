@@ -1,7 +1,7 @@
 using KomunitasKampus.Application.Features.Auth.DTOs;
 using KomunitasKampus.Domain.Entities;
 using KomunitasKampus.Domain.Enums;
-using KomunitasKampus.Domain.Repositories;
+using KomunitasKampus.Domain.Interfaces;
 using MediatR;
 
 namespace KomunitasKampus.Application.Features.Auth.Commands.RegisterUser;

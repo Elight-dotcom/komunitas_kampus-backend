@@ -18,6 +18,8 @@ public class Account : BaseEntity
 
     public User? User { get; set; }
 
+    public ICollection<Comment> Comments { get; set; } = new List<Comment>();
+
     public ICollection<Membership> Memberships { get; set; } = new List<Membership>();
 
     public ICollection<Comment> DeletedComments { get; set; } = new List<Comment>();

@@ -1,5 +1,5 @@
 using KomunitasKampus.Domain.Entities;
-using KomunitasKampus.Domain.Repositories;
+using KomunitasKampus.Domain.Interfaces;
 using KomunitasKampus.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 

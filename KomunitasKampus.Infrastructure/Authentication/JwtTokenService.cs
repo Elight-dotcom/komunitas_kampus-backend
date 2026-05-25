@@ -112,6 +112,13 @@ public class JwtTokenService : IAuthTokenService
             );
         }
 
+        var roleValue = account.Role.ToString().Equals(
+                "Organisasi",
+                StringComparison.OrdinalIgnoreCase
+            )
+            ? "organization"
+            : "user";
+
         var claims = new List<Claim>
         {
             new(JwtRegisteredClaimNames.Sub, account.Id.ToString()),
@@ -120,11 +127,16 @@ public class JwtTokenService : IAuthTokenService
             new(ClaimTypes.NameIdentifier, account.Id.ToString()),
             new(ClaimTypes.Name, account.Username),
             new(ClaimTypes.Email, account.Email),
-            new(ClaimTypes.Role, account.Role.ToString()),
+            new(ClaimTypes.Role, roleValue),
             new("username", account.Username),
-            new("role", account.Role.ToString()),
+            new("role", roleValue),
             new("token_type", tokenType)
         };
+
+        if (account.Organization is not null)
+        {
+            claims.Add(new Claim("organization_id", account.Organization.Id.ToString()));
+        }
 
         var signingKey = new SymmetricSecurityKey(secretKey);
 

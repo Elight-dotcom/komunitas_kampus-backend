@@ -234,6 +234,10 @@ namespace KomunitasKampus.Infrastructure.Persistence.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
+                    b.Property<Guid?>("AccountId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("account_id");
+
                     b.Property<string>("Content")
                         .IsRequired()
                         .HasMaxLength(500)
@@ -253,8 +257,8 @@ namespace KomunitasKampus.Infrastructure.Persistence.Migrations
                         .HasColumnName("deleted_by_id");
 
                     b.Property<string>("DeletedReason")
-                        .HasMaxLength(255)
-                        .HasColumnType("character varying(255)")
+                        .HasMaxLength(150)
+                        .HasColumnType("character varying(150)")
                         .HasColumnName("deleted_reason");
 
                     b.Property<Guid>("PostId")
@@ -269,17 +273,27 @@ namespace KomunitasKampus.Infrastructure.Persistence.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("user_id");
 
+                    b.Property<Guid>("UserId1")
+                        .HasColumnType("uuid")
+                        .HasColumnName("user_id1");
+
                     b.HasKey("Id")
                         .HasName("pk_comments");
+
+                    b.HasIndex("AccountId")
+                        .HasDatabaseName("ix_comments_account_id");
 
                     b.HasIndex("DeletedById")
                         .HasDatabaseName("ix_comments_deleted_by_id");
 
-                    b.HasIndex("PostId")
-                        .HasDatabaseName("ix_comments_post_id");
+                    b.HasIndex("UserId1")
+                        .HasDatabaseName("ix_comments_user_id1");
 
-                    b.HasIndex("UserId")
-                        .HasDatabaseName("ix_comments_user_id");
+                    b.HasIndex("PostId", "CreatedAt")
+                        .HasDatabaseName("ix_comments_post_created");
+
+                    b.HasIndex("UserId", "PostId", "CreatedAt")
+                        .HasDatabaseName("ix_comments_user_post_created");
 
                     b.ToTable("comments", (string)null);
                 });
@@ -311,15 +325,22 @@ namespace KomunitasKampus.Infrastructure.Persistence.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("user_id");
 
+                    b.Property<Guid?>("UserId1")
+                        .HasColumnType("uuid")
+                        .HasColumnName("user_id1");
+
                     b.HasKey("Id")
                         .HasName("pk_likes");
 
-                    b.HasIndex("UserId")
-                        .HasDatabaseName("ix_likes_user_id");
+                    b.HasIndex("PostId")
+                        .HasDatabaseName("ix_likes_post_id");
 
-                    b.HasIndex("PostId", "UserId")
+                    b.HasIndex("UserId1")
+                        .HasDatabaseName("ix_likes_user_id1");
+
+                    b.HasIndex("UserId", "PostId")
                         .IsUnique()
-                        .HasDatabaseName("ix_likes_post_id_user_id");
+                        .HasDatabaseName("ux_likes_user_post");
 
                     b.ToTable("likes", (string)null);
                 });
@@ -345,8 +366,8 @@ namespace KomunitasKampus.Infrastructure.Persistence.Migrations
 
                     b.Property<string>("InviteType")
                         .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("character varying(30)")
+                        .HasMaxLength(32)
+                        .HasColumnType("character varying(32)")
                         .HasColumnName("invite_type");
 
                     b.Property<Guid>("OrganizationId")
@@ -363,8 +384,8 @@ namespace KomunitasKampus.Infrastructure.Persistence.Migrations
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("character varying(30)")
+                        .HasMaxLength(32)
+                        .HasColumnType("character varying(32)")
                         .HasColumnName("status");
 
                     b.Property<DateTime>("UpdatedAt")
@@ -374,12 +395,13 @@ namespace KomunitasKampus.Infrastructure.Persistence.Migrations
                     b.HasKey("Id")
                         .HasName("pk_memberships");
 
-                    b.HasIndex("OrganizationId")
-                        .HasDatabaseName("ix_memberships_organization_id");
-
                     b.HasIndex("AccountId", "OrganizationId")
                         .IsUnique()
-                        .HasDatabaseName("ix_memberships_account_id_organization_id");
+                        .HasDatabaseName("ux_memberships_account_org_pending_accepted")
+                        .HasFilter("\"deleted_at\" IS NULL AND \"status\" IN ('Pending', 'Accepted')");
+
+                    b.HasIndex("OrganizationId", "Status", "InviteType")
+                        .HasDatabaseName("ix_memberships_org_status_invite_type");
 
                     b.ToTable("memberships", (string)null);
                 });
@@ -437,6 +459,65 @@ namespace KomunitasKampus.Infrastructure.Persistence.Migrations
                         .HasDatabaseName("ix_messages_sender_id");
 
                     b.ToTable("messages", (string)null);
+                });
+
+            modelBuilder.Entity("KomunitasKampus.Domain.Entities.Notification", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<Guid?>("ActorId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("actor_id");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("deleted_at");
+
+                    b.Property<bool>("IsRead")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false)
+                        .HasColumnName("is_read");
+
+                    b.Property<DateTime?>("ReadAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("read_at");
+
+                    b.Property<Guid>("RecipientId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("recipient_id");
+
+                    b.Property<Guid?>("ReferenceId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("reference_id");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("type");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at");
+
+                    b.HasKey("Id")
+                        .HasName("pk_notifications");
+
+                    b.HasIndex("ActorId")
+                        .HasDatabaseName("ix_notifications_actor_id");
+
+                    b.HasIndex("RecipientId", "IsRead", "CreatedAt")
+                        .HasDatabaseName("ix_notifications_recipient_read_created");
+
+                    b.ToTable("notifications", (string)null);
                 });
 
             modelBuilder.Entity("KomunitasKampus.Domain.Entities.Organization", b =>
@@ -572,8 +653,8 @@ namespace KomunitasKampus.Infrastructure.Persistence.Migrations
                     b.HasKey("Id")
                         .HasName("pk_posts");
 
-                    b.HasIndex("OrganizationId")
-                        .HasDatabaseName("ix_posts_organization_id");
+                    b.HasIndex("OrganizationId", "IsPinned", "PinOrder", "CreatedAt")
+                        .HasDatabaseName("ix_posts_organization_id_is_pinned_pin_order_created_at");
 
                     b.ToTable("posts", null, t =>
                         {
@@ -633,8 +714,8 @@ namespace KomunitasKampus.Infrastructure.Persistence.Migrations
                     b.HasKey("Id")
                         .HasName("pk_post_media");
 
-                    b.HasIndex("PostId")
-                        .HasDatabaseName("ix_post_media_post_id");
+                    b.HasIndex("PostId", "OrderIndex")
+                        .HasDatabaseName("ix_post_media_post_id_order_index");
 
                     b.ToTable("post_media", (string)null);
                 });
@@ -654,6 +735,12 @@ namespace KomunitasKampus.Infrastructure.Persistence.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("deleted_at");
 
+                    b.Property<string>("Platform")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)")
+                        .HasColumnName("platform");
+
                     b.Property<Guid>("PostId")
                         .HasColumnType("uuid")
                         .HasColumnName("post_id");
@@ -666,15 +753,21 @@ namespace KomunitasKampus.Infrastructure.Persistence.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("user_id");
 
+                    b.Property<Guid?>("UserId1")
+                        .HasColumnType("uuid")
+                        .HasColumnName("user_id1");
+
                     b.HasKey("Id")
                         .HasName("pk_shares");
 
-                    b.HasIndex("UserId")
-                        .HasDatabaseName("ix_shares_user_id");
+                    b.HasIndex("UserId1")
+                        .HasDatabaseName("ix_shares_user_id1");
 
-                    b.HasIndex("PostId", "UserId")
-                        .IsUnique()
-                        .HasDatabaseName("ix_shares_post_id_user_id");
+                    b.HasIndex("PostId", "CreatedAt")
+                        .HasDatabaseName("ix_shares_post_created");
+
+                    b.HasIndex("UserId", "PostId")
+                        .HasDatabaseName("ix_shares_user_post");
 
                     b.ToTable("shares", (string)null);
                 });
@@ -731,10 +824,16 @@ namespace KomunitasKampus.Infrastructure.Persistence.Migrations
                     b.HasKey("Id")
                         .HasName("pk_stories");
 
-                    b.HasIndex("OrganizationId")
-                        .HasDatabaseName("ix_stories_organization_id");
+                    b.HasIndex("ExpiresAt")
+                        .HasDatabaseName("ix_stories_expires_at");
 
-                    b.ToTable("stories", (string)null);
+                    b.HasIndex("OrganizationId", "IsExpired", "ExpiresAt")
+                        .HasDatabaseName("ix_stories_org_expired_expires_at");
+
+                    b.ToTable("stories", null, t =>
+                        {
+                            t.HasCheckConstraint("ck_stories_text_or_media_content", "(\r\n    media_type = 'Text'\r\n    AND text_content IS NOT NULL\r\n    AND media_url IS NULL\r\n)\r\nOR\r\n(\r\n    media_type IN ('Image', 'Video')\r\n    AND media_url IS NOT NULL\r\n)");
+                        });
                 });
 
             modelBuilder.Entity("KomunitasKampus.Domain.Entities.StoryView", b =>
@@ -764,6 +863,12 @@ namespace KomunitasKampus.Infrastructure.Persistence.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("updated_at");
 
+                    b.Property<DateTime>("ViewedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("viewed_at")
+                        .HasDefaultValueSql("timezone('utc', now())");
+
                     b.HasKey("Id")
                         .HasName("pk_story_views");
 
@@ -772,7 +877,7 @@ namespace KomunitasKampus.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("StoryId", "AccountId")
                         .IsUnique()
-                        .HasDatabaseName("ix_story_views_story_id_account_id");
+                        .HasDatabaseName("ux_story_views_story_account");
 
                     b.ToTable("story_views", (string)null);
                 });
@@ -877,6 +982,11 @@ namespace KomunitasKampus.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("KomunitasKampus.Domain.Entities.Comment", b =>
                 {
+                    b.HasOne("KomunitasKampus.Domain.Entities.Account", null)
+                        .WithMany("Comments")
+                        .HasForeignKey("AccountId")
+                        .HasConstraintName("fk_comments_accounts_account_id");
+
                     b.HasOne("KomunitasKampus.Domain.Entities.Account", "DeletedBy")
                         .WithMany("DeletedComments")
                         .HasForeignKey("DeletedById")
@@ -890,12 +1000,19 @@ namespace KomunitasKampus.Infrastructure.Persistence.Migrations
                         .IsRequired()
                         .HasConstraintName("fk_comments_posts_post_id");
 
-                    b.HasOne("KomunitasKampus.Domain.Entities.User", "User")
-                        .WithMany("Comments")
+                    b.HasOne("KomunitasKampus.Domain.Entities.Account", "User")
+                        .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired()
-                        .HasConstraintName("fk_comments_users_user_id");
+                        .HasConstraintName("fk_comments_accounts_user_id");
+
+                    b.HasOne("KomunitasKampus.Domain.Entities.User", null)
+                        .WithMany("Comments")
+                        .HasForeignKey("UserId1")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_comments_users_user_id1");
 
                     b.Navigation("DeletedBy");
 
@@ -914,11 +1031,16 @@ namespace KomunitasKampus.Infrastructure.Persistence.Migrations
                         .HasConstraintName("fk_likes_posts_post_id");
 
                     b.HasOne("KomunitasKampus.Domain.Entities.User", "User")
-                        .WithMany("Likes")
+                        .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired()
                         .HasConstraintName("fk_likes_users_user_id");
+
+                    b.HasOne("KomunitasKampus.Domain.Entities.User", null)
+                        .WithMany("Likes")
+                        .HasForeignKey("UserId1")
+                        .HasConstraintName("fk_likes_users_user_id1");
 
                     b.Navigation("Post");
 
@@ -930,14 +1052,14 @@ namespace KomunitasKampus.Infrastructure.Persistence.Migrations
                     b.HasOne("KomunitasKampus.Domain.Entities.Account", "Account")
                         .WithMany("Memberships")
                         .HasForeignKey("AccountId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_memberships_accounts_account_id");
 
                     b.HasOne("KomunitasKampus.Domain.Entities.Organization", "Organization")
                         .WithMany("Memberships")
                         .HasForeignKey("OrganizationId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_memberships_organizations_organization_id");
 
@@ -973,6 +1095,26 @@ namespace KomunitasKampus.Infrastructure.Persistence.Migrations
                     b.Navigation("Room");
 
                     b.Navigation("Sender");
+                });
+
+            modelBuilder.Entity("KomunitasKampus.Domain.Entities.Notification", b =>
+                {
+                    b.HasOne("KomunitasKampus.Domain.Entities.Account", "Actor")
+                        .WithMany()
+                        .HasForeignKey("ActorId")
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .HasConstraintName("fk_notifications_accounts_actor_id");
+
+                    b.HasOne("KomunitasKampus.Domain.Entities.Account", "Recipient")
+                        .WithMany()
+                        .HasForeignKey("RecipientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_notifications_accounts_recipient_id");
+
+                    b.Navigation("Actor");
+
+                    b.Navigation("Recipient");
                 });
 
             modelBuilder.Entity("KomunitasKampus.Domain.Entities.Organization", b =>
@@ -1021,11 +1163,16 @@ namespace KomunitasKampus.Infrastructure.Persistence.Migrations
                         .HasConstraintName("fk_shares_posts_post_id");
 
                     b.HasOne("KomunitasKampus.Domain.Entities.User", "User")
-                        .WithMany("Shares")
+                        .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired()
                         .HasConstraintName("fk_shares_users_user_id");
+
+                    b.HasOne("KomunitasKampus.Domain.Entities.User", null)
+                        .WithMany("Shares")
+                        .HasForeignKey("UserId1")
+                        .HasConstraintName("fk_shares_users_user_id1");
 
                     b.Navigation("Post");
 
@@ -1054,7 +1201,7 @@ namespace KomunitasKampus.Infrastructure.Persistence.Migrations
                         .HasConstraintName("fk_story_views_accounts_account_id");
 
                     b.HasOne("KomunitasKampus.Domain.Entities.Story", "Story")
-                        .WithMany("StoryViews")
+                        .WithMany("Views")
                         .HasForeignKey("StoryId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired()
@@ -1082,6 +1229,8 @@ namespace KomunitasKampus.Infrastructure.Persistence.Migrations
                     b.Navigation("ChatParticipants");
 
                     b.Navigation("ChatReadStatuses");
+
+                    b.Navigation("Comments");
 
                     b.Navigation("DeletedComments");
 
@@ -1131,7 +1280,7 @@ namespace KomunitasKampus.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("KomunitasKampus.Domain.Entities.Story", b =>
                 {
-                    b.Navigation("StoryViews");
+                    b.Navigation("Views");
                 });
 
             modelBuilder.Entity("KomunitasKampus.Domain.Entities.User", b =>
