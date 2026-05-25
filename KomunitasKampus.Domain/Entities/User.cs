@@ -6,6 +6,8 @@ public class User : BaseEntity
 
     public string FullName { get; set; } = string.Empty;
 
+    public string University { get; set; } = string.Empty;
+
     public Account? Account { get; set; }
 
     public ICollection<Like> Likes { get; set; } = new List<Like>();

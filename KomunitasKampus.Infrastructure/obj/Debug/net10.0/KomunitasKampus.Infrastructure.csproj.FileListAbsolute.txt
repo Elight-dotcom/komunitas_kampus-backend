@@ -17,3 +17,4 @@ C:\Project\KomunitasKampus\backend\KomunitasKampus.Infrastructure\obj\Debug\net1
 C:\Project\KomunitasKampus\backend\KomunitasKampus.Infrastructure\obj\Debug\net10.0\KomunitasKampus.Infrastructure.pdb
 C:\Project\KomunitasKampus\backend\KomunitasKampus.Infrastructure\obj\Debug\net10.0\KomunitasKampus.Infrastructure.genruntimeconfig.cache
 C:\Project\KomunitasKampus\backend\KomunitasKampus.Infrastructure\obj\Debug\net10.0\ref\KomunitasKampus.Infrastructure.dll
+C:\Project\KomunitasKampus\backend\KomunitasKampus.Infrastructure\obj\Debug\net10.0\KomunitasKampus.Infrastructure.sourcelink.json
