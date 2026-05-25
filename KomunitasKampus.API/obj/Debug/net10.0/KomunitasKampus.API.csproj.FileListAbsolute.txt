@@ -170,3 +170,7 @@ C:\Project\KomunitasKampus\backend\KomunitasKampus.API\bin\Debug\net10.0\ru\Micr
 C:\Project\KomunitasKampus\backend\KomunitasKampus.API\bin\Debug\net10.0\tr\Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll
 C:\Project\KomunitasKampus\backend\KomunitasKampus.API\bin\Debug\net10.0\zh-Hans\Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll
 C:\Project\KomunitasKampus\backend\KomunitasKampus.API\bin\Debug\net10.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.MSBuild.resources.dll
+C:\Project\KomunitasKampus\backend\KomunitasKampus.API\bin\Debug\net10.0\CommunityToolkit.HighPerformance.dll
+C:\Project\KomunitasKampus\backend\KomunitasKampus.API\bin\Debug\net10.0\Minio.dll
+C:\Project\KomunitasKampus\backend\KomunitasKampus.API\bin\Debug\net10.0\System.IO.Hashing.dll
+C:\Project\KomunitasKampus\backend\KomunitasKampus.API\bin\Debug\net10.0\System.Reactive.dll
