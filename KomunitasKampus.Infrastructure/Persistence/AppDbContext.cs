@@ -23,6 +23,8 @@ public class AppDbContext : DbContext
 
     public DbSet<Membership> Memberships => Set<Membership>();
 
+    public DbSet<Notification> Notifications => Set<Notification>();
+
     public DbSet<Like> Likes => Set<Like>();
 
     public DbSet<Comment> Comments => Set<Comment>();
@@ -51,6 +53,7 @@ public class AppDbContext : DbContext
         ConfigurePost(modelBuilder);
         ConfigurePostMedia(modelBuilder);
         ConfigureMembership(modelBuilder);
+        ConfigureNotification(modelBuilder);
         ConfigureLike(modelBuilder);
         ConfigureComment(modelBuilder);
         ConfigureShare(modelBuilder);
@@ -297,6 +300,14 @@ public class AppDbContext : DbContext
                 "ck_posts_pin_order_max_3",
                 "pin_order IS NULL OR pin_order BETWEEN 1 AND 3"
             );
+
+            entity.HasIndex(post => new
+            {
+                post.OrganizationId,
+                post.IsPinned,
+                post.PinOrder,
+                post.CreatedAt
+            });
         });
     }
 
@@ -330,6 +341,12 @@ public class AppDbContext : DbContext
                 .WithMany(post => post.Media)
                 .HasForeignKey(media => media.PostId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            entity.HasIndex(media => new
+            {
+                media.PostId,
+                media.OrderIndex
+            });
         });
     }
 
@@ -337,38 +354,146 @@ public class AppDbContext : DbContext
     {
         modelBuilder.Entity<Membership>(entity =>
         {
+            entity.ToTable("memberships");
+
             entity.HasKey(membership => membership.Id);
 
+            entity.Property(membership => membership.Id)
+                .HasColumnName("id");
+
+            entity.Property(membership => membership.AccountId)
+                .HasColumnName("account_id")
+                .IsRequired();
+
+            entity.Property(membership => membership.OrganizationId)
+                .HasColumnName("organization_id")
+                .IsRequired();
+
             entity.Property(membership => membership.Status)
+                .HasColumnName("status")
                 .HasConversion<string>()
-                .HasMaxLength(30)
+                .HasMaxLength(32)
                 .IsRequired();
 
             entity.Property(membership => membership.InviteType)
+                .HasColumnName("invite_type")
                 .HasConversion<string>()
-                .HasMaxLength(30)
+                .HasMaxLength(32)
                 .IsRequired();
 
             entity.Property(membership => membership.RequestedAt)
+                .HasColumnName("requested_at")
                 .IsRequired();
 
-            entity.Property(membership => membership.ResolvedAt);
+            entity.Property(membership => membership.ResolvedAt)
+                .HasColumnName("resolved_at");
+
+            entity.Property(membership => membership.CreatedAt)
+                .HasColumnName("created_at")
+                .IsRequired();
+
+            entity.Property(membership => membership.UpdatedAt)
+                .HasColumnName("updated_at")
+                .IsRequired();
+
+            entity.Property(membership => membership.DeletedAt)
+                .HasColumnName("deleted_at");
 
             entity.HasOne(membership => membership.Account)
                 .WithMany(account => account.Memberships)
                 .HasForeignKey(membership => membership.AccountId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
 
             entity.HasOne(membership => membership.Organization)
                 .WithMany(organization => organization.Memberships)
                 .HasForeignKey(membership => membership.OrganizationId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
 
             entity.HasIndex(membership => new
             {
                 membership.AccountId,
                 membership.OrganizationId
-            }).IsUnique();
+            })
+                .IsUnique()
+                .HasDatabaseName("ux_memberships_account_org_pending_accepted")
+                .HasFilter("\"deleted_at\" IS NULL AND \"status\" IN ('Pending', 'Accepted')");
+
+            entity.HasIndex(membership => new
+            {
+                membership.OrganizationId,
+                membership.Status,
+                membership.InviteType
+            })
+                .HasDatabaseName("ix_memberships_org_status_invite_type");
+
+            entity.HasQueryFilter(membership => membership.DeletedAt == null);
+        });
+    }
+
+    private static void ConfigureNotification(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Notification>(entity =>
+        {
+            entity.ToTable("notifications");
+
+            entity.HasKey(notification => notification.Id);
+
+            entity.Property(notification => notification.Id)
+                .HasColumnName("id");
+
+            entity.Property(notification => notification.RecipientId)
+                .HasColumnName("recipient_id")
+                .IsRequired();
+
+            entity.Property(notification => notification.ActorId)
+                .HasColumnName("actor_id");
+
+            entity.Property(notification => notification.Type)
+                .HasColumnName("type")
+                .HasMaxLength(100)
+                .IsRequired();
+
+            entity.Property(notification => notification.ReferenceId)
+                .HasColumnName("reference_id");
+
+            entity.Property(notification => notification.IsRead)
+                .HasColumnName("is_read")
+                .HasDefaultValue(false)
+                .IsRequired();
+
+            entity.Property(notification => notification.ReadAt)
+                .HasColumnName("read_at");
+
+            entity.Property(notification => notification.CreatedAt)
+                .HasColumnName("created_at")
+                .IsRequired();
+
+            entity.Property(notification => notification.UpdatedAt)
+                .HasColumnName("updated_at")
+                .IsRequired();
+
+            entity.Property(notification => notification.DeletedAt)
+                .HasColumnName("deleted_at");
+
+            entity.HasOne(notification => notification.Recipient)
+                .WithMany()
+                .HasForeignKey(notification => notification.RecipientId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasOne(notification => notification.Actor)
+                .WithMany()
+                .HasForeignKey(notification => notification.ActorId)
+                .OnDelete(DeleteBehavior.SetNull);
+
+            entity.HasIndex(notification => new
+            {
+                notification.RecipientId,
+                notification.IsRead,
+                notification.CreatedAt
+            })
+                .HasDatabaseName("ix_notifications_recipient_read_created");
+
+            entity.HasQueryFilter(notification => notification.DeletedAt == null);
         });
     }
 
@@ -376,7 +501,31 @@ public class AppDbContext : DbContext
     {
         modelBuilder.Entity<Like>(entity =>
         {
+            entity.ToTable("likes");
+
             entity.HasKey(like => like.Id);
+
+            entity.Property(like => like.Id)
+                .HasColumnName("id");
+
+            entity.Property(like => like.UserId)
+                .HasColumnName("user_id")
+                .IsRequired();
+
+            entity.Property(like => like.PostId)
+                .HasColumnName("post_id")
+                .IsRequired();
+
+            entity.Property(like => like.CreatedAt)
+                .HasColumnName("created_at")
+                .IsRequired();
+
+            entity.Property(like => like.UpdatedAt)
+                .HasColumnName("updated_at")
+                .IsRequired();
+
+            entity.Property(like => like.DeletedAt)
+                .HasColumnName("deleted_at");
 
             entity.HasOne(like => like.Post)
                 .WithMany(post => post.Likes)
@@ -384,15 +533,20 @@ public class AppDbContext : DbContext
                 .OnDelete(DeleteBehavior.Restrict);
 
             entity.HasOne(like => like.User)
-                .WithMany(user => user.Likes)
+                .WithMany()
                 .HasForeignKey(like => like.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             entity.HasIndex(like => new
             {
-                like.PostId,
-                like.UserId
-            }).IsUnique();
+                like.UserId,
+                like.PostId
+            })
+                .IsUnique()
+                .HasDatabaseName("ux_likes_user_post");
+
+            entity.HasIndex(like => like.PostId)
+                .HasDatabaseName("ix_likes_post_id");
         });
     }
 
@@ -400,14 +554,43 @@ public class AppDbContext : DbContext
     {
         modelBuilder.Entity<Comment>(entity =>
         {
+            entity.ToTable("comments");
+
             entity.HasKey(comment => comment.Id);
 
+            entity.Property(comment => comment.Id)
+                .HasColumnName("id");
+
+            entity.Property(comment => comment.UserId)
+                .HasColumnName("user_id")
+                .IsRequired();
+
+            entity.Property(comment => comment.PostId)
+                .HasColumnName("post_id")
+                .IsRequired();
+
             entity.Property(comment => comment.Content)
+                .HasColumnName("content")
                 .HasMaxLength(500)
                 .IsRequired();
 
             entity.Property(comment => comment.DeletedReason)
-                .HasMaxLength(255);
+                .HasColumnName("deleted_reason")
+                .HasMaxLength(150);
+
+            entity.Property(comment => comment.DeletedById)
+                .HasColumnName("deleted_by_id");
+
+            entity.Property(comment => comment.CreatedAt)
+                .HasColumnName("created_at")
+                .IsRequired();
+
+            entity.Property(comment => comment.UpdatedAt)
+                .HasColumnName("updated_at")
+                .IsRequired();
+
+            entity.Property(comment => comment.DeletedAt)
+                .HasColumnName("deleted_at");
 
             entity.HasOne(comment => comment.Post)
                 .WithMany(post => post.Comments)
@@ -415,7 +598,7 @@ public class AppDbContext : DbContext
                 .OnDelete(DeleteBehavior.Restrict);
 
             entity.HasOne(comment => comment.User)
-                .WithMany(user => user.Comments)
+                .WithMany()
                 .HasForeignKey(comment => comment.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
 
@@ -423,6 +606,21 @@ public class AppDbContext : DbContext
                 .WithMany(account => account.DeletedComments)
                 .HasForeignKey(comment => comment.DeletedById)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            entity.HasIndex(comment => new
+            {
+                comment.PostId,
+                comment.CreatedAt
+            })
+                .HasDatabaseName("ix_comments_post_created");
+
+            entity.HasIndex(comment => new
+            {
+                comment.UserId,
+                comment.PostId,
+                comment.CreatedAt
+            })
+                .HasDatabaseName("ix_comments_user_post_created");
         });
     }
 
@@ -430,7 +628,37 @@ public class AppDbContext : DbContext
     {
         modelBuilder.Entity<Share>(entity =>
         {
+            entity.ToTable("shares");
+
             entity.HasKey(share => share.Id);
+
+            entity.Property(share => share.Id)
+                .HasColumnName("id");
+
+            entity.Property(share => share.UserId)
+                .HasColumnName("user_id")
+                .IsRequired();
+
+            entity.Property(share => share.PostId)
+                .HasColumnName("post_id")
+                .IsRequired();
+
+            entity.Property(share => share.Platform)
+                .HasColumnName("platform")
+                .HasConversion<string>()
+                .HasMaxLength(30)
+                .IsRequired();
+
+            entity.Property(share => share.CreatedAt)
+                .HasColumnName("created_at")
+                .IsRequired();
+
+            entity.Property(share => share.UpdatedAt)
+                .HasColumnName("updated_at")
+                .IsRequired();
+
+            entity.Property(share => share.DeletedAt)
+                .HasColumnName("deleted_at");
 
             entity.HasOne(share => share.Post)
                 .WithMany(post => post.Shares)
@@ -438,15 +666,23 @@ public class AppDbContext : DbContext
                 .OnDelete(DeleteBehavior.Restrict);
 
             entity.HasOne(share => share.User)
-                .WithMany(user => user.Shares)
+                .WithMany()
                 .HasForeignKey(share => share.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             entity.HasIndex(share => new
             {
                 share.PostId,
-                share.UserId
-            }).IsUnique();
+                share.CreatedAt
+            })
+                .HasDatabaseName("ix_shares_post_created");
+
+            entity.HasIndex(share => new
+            {
+                share.UserId,
+                share.PostId
+            })
+                .HasDatabaseName("ix_shares_user_post");
         });
     }
 
@@ -454,29 +690,82 @@ public class AppDbContext : DbContext
     {
         modelBuilder.Entity<Story>(entity =>
         {
+            entity.ToTable("stories");
+
             entity.HasKey(story => story.Id);
 
+            entity.Property(story => story.Id)
+                .HasColumnName("id");
+
+            entity.Property(story => story.OrganizationId)
+                .HasColumnName("organization_id")
+                .IsRequired();
+
             entity.Property(story => story.MediaType)
+                .HasColumnName("media_type")
                 .HasConversion<string>()
                 .HasMaxLength(30)
                 .IsRequired();
 
             entity.Property(story => story.MediaUrl)
+                .HasColumnName("media_url")
                 .HasMaxLength(500);
 
             entity.Property(story => story.TextContent)
+                .HasColumnName("text_content")
                 .HasMaxLength(280);
 
             entity.Property(story => story.IsExpired)
-                .HasDefaultValue(false);
+                .HasColumnName("is_expired")
+                .HasDefaultValue(false)
+                .IsRequired();
 
             entity.Property(story => story.ExpiresAt)
+                .HasColumnName("expires_at")
                 .IsRequired();
+
+            entity.Property(story => story.CreatedAt)
+                .HasColumnName("created_at")
+                .IsRequired();
+
+            entity.Property(story => story.UpdatedAt)
+                .HasColumnName("updated_at")
+                .IsRequired();
+
+            entity.Property(story => story.DeletedAt)
+                .HasColumnName("deleted_at");
 
             entity.HasOne(story => story.Organization)
                 .WithMany(organization => organization.Stories)
                 .HasForeignKey(story => story.OrganizationId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            entity.HasIndex(story => new
+            {
+                story.OrganizationId,
+                story.IsExpired,
+                story.ExpiresAt
+            })
+                .HasDatabaseName("ix_stories_org_expired_expires_at");
+
+            entity.HasIndex(story => story.ExpiresAt)
+                .HasDatabaseName("ix_stories_expires_at");
+
+            entity.HasCheckConstraint(
+                "ck_stories_text_or_media_content",
+                """
+            (
+                media_type = 'Text'
+                AND text_content IS NOT NULL
+                AND media_url IS NULL
+            )
+            OR
+            (
+                media_type IN ('Image', 'Video')
+                AND media_url IS NOT NULL
+            )
+            """
+            );
         });
     }
 
@@ -484,10 +773,39 @@ public class AppDbContext : DbContext
     {
         modelBuilder.Entity<StoryView>(entity =>
         {
+            entity.ToTable("story_views");
+
             entity.HasKey(storyView => storyView.Id);
 
+            entity.Property(storyView => storyView.Id)
+                .HasColumnName("id");
+
+            entity.Property(storyView => storyView.StoryId)
+                .HasColumnName("story_id")
+                .IsRequired();
+
+            entity.Property(storyView => storyView.AccountId)
+                .HasColumnName("account_id")
+                .IsRequired();
+
+            entity.Property(storyView => storyView.ViewedAt)
+                .HasColumnName("viewed_at")
+                .HasDefaultValueSql("timezone('utc', now())")
+                .IsRequired();
+
+            entity.Property(storyView => storyView.CreatedAt)
+                .HasColumnName("created_at")
+                .IsRequired();
+
+            entity.Property(storyView => storyView.UpdatedAt)
+                .HasColumnName("updated_at")
+                .IsRequired();
+
+            entity.Property(storyView => storyView.DeletedAt)
+                .HasColumnName("deleted_at");
+
             entity.HasOne(storyView => storyView.Story)
-                .WithMany(story => story.StoryViews)
+                .WithMany(story => story.Views)
                 .HasForeignKey(storyView => storyView.StoryId)
                 .OnDelete(DeleteBehavior.Restrict);
 
@@ -500,10 +818,14 @@ public class AppDbContext : DbContext
             {
                 storyView.StoryId,
                 storyView.AccountId
-            }).IsUnique();
+            })
+                .IsUnique()
+                .HasDatabaseName("ux_story_views_story_account");
+
+            entity.HasIndex(storyView => storyView.AccountId)
+                .HasDatabaseName("ix_story_views_account_id");
         });
     }
-
     private static void ConfigureChatRoom(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<ChatRoom>(entity =>

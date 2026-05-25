@@ -1,6 +1,6 @@
 using KomunitasKampus.Domain.Entities;
 
-namespace KomunitasKampus.Domain.Repositories;
+namespace KomunitasKampus.Domain.Interfaces;
 
 public interface IAccountRepository
 {

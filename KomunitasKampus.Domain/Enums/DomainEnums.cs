@@ -52,3 +52,9 @@ public enum ChatRoomType
     Sub = 2,
     Direct = 3
 }
+
+public enum SharePlatform
+{
+    Internal = 1,
+    External = 2
+}

@@ -14,7 +14,7 @@ public class Comment : BaseEntity
 
     public Post? Post { get; set; }
 
-    public User? User { get; set; }
+    public Account? User { get; set; }
 
     public Account? DeletedBy { get; set; }
 }

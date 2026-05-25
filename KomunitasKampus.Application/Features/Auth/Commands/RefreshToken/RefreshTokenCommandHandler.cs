@@ -1,7 +1,7 @@
 using KomunitasKampus.Application.Common.Exceptions;
 using KomunitasKampus.Application.Common.Interfaces;
 using KomunitasKampus.Application.Features.Auth.DTOs;
-using KomunitasKampus.Domain.Repositories;
+using KomunitasKampus.Domain.Interfaces;
 using MediatR;
 
 namespace KomunitasKampus.Application.Features.Auth.Commands.RefreshToken;
