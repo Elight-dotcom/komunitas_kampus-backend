@@ -13,3 +13,4 @@ C:\Project\KomunitasKampus\backend\KomunitasKampus.Application\obj\Debug\net10.0
 C:\Project\KomunitasKampus\backend\KomunitasKampus.Application\obj\Debug\net10.0\refint\KomunitasKampus.Application.dll
 C:\Project\KomunitasKampus\backend\KomunitasKampus.Application\obj\Debug\net10.0\KomunitasKampus.Application.pdb
 C:\Project\KomunitasKampus\backend\KomunitasKampus.Application\obj\Debug\net10.0\ref\KomunitasKampus.Application.dll
+C:\Project\KomunitasKampus\backend\KomunitasKampus.Application\obj\Debug\net10.0\KomunitasKampus.Application.sourcelink.json

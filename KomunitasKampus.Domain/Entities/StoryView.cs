@@ -6,6 +6,8 @@ public class StoryView : BaseEntity
 
     public Guid AccountId { get; set; }
 
+    public DateTime ViewedAt { get; set; } = DateTime.UtcNow;
+
     public Story? Story { get; set; }
 
     public Account? Account { get; set; }

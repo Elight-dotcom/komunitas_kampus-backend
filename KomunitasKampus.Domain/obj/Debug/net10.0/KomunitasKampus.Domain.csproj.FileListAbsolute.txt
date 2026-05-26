@@ -9,3 +9,4 @@ C:\Project\KomunitasKampus\backend\KomunitasKampus.Domain\obj\Debug\net10.0\Komu
 C:\Project\KomunitasKampus\backend\KomunitasKampus.Domain\obj\Debug\net10.0\refint\KomunitasKampus.Domain.dll
 C:\Project\KomunitasKampus\backend\KomunitasKampus.Domain\obj\Debug\net10.0\KomunitasKampus.Domain.pdb
 C:\Project\KomunitasKampus\backend\KomunitasKampus.Domain\obj\Debug\net10.0\ref\KomunitasKampus.Domain.dll
+C:\Project\KomunitasKampus\backend\KomunitasKampus.Domain\obj\Debug\net10.0\KomunitasKampus.Domain.sourcelink.json

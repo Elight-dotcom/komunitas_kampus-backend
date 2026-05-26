@@ -18,5 +18,5 @@ public class Story : BaseEntity
 
     public Organization? Organization { get; set; }
 
-    public ICollection<StoryView> StoryViews { get; set; } = new List<StoryView>();
+    public ICollection<StoryView> Views { get; set; } = new List<StoryView>();
 }
