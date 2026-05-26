@@ -9,6 +9,7 @@ using KomunitasKampus.Application.Features.Membership.Queries.GetInvitations;
 using KomunitasKampus.Application.Features.Membership.Queries.GetMemberList;
 using KomunitasKampus.Application.Features.Membership.Queries.GetMembershipStatus;
 using KomunitasKampus.Application.Features.Membership.Queries.GetPendingRequests;
+using KomunitasKampus.Application.Features.Membership.Queries.GetSentInvitations;
 using KomunitasKampus.API.Contracts.Membership;
 using KomunitasKampus.API.Models;
 using MediatR;
@@ -210,6 +211,27 @@ public class MembershipController : ControllerBase
         return Ok(ApiResponse<IReadOnlyList<MemberRequestDto>>.Ok(
             result,
             "Daftar request membership berhasil diambil."
+        ));
+    }
+
+    [Authorize(Roles = OrganizationRoles)]
+    [HttpGet("api/organizations/{orgId:guid}/invitations/sent")]
+    [ProducesResponseType(typeof(ApiResponse<IReadOnlyList<SentInvitationDto>>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetSentInvitations(
+        Guid orgId,
+        CancellationToken cancellationToken
+    )
+    {
+        EnsureOrganizationAccess(orgId);
+
+        var result = await _mediator.Send(
+            new GetSentInvitationsQuery(orgId),
+            cancellationToken
+        );
+
+        return Ok(ApiResponse<IReadOnlyList<SentInvitationDto>>.Ok(
+            result,
+            "Daftar undangan berhasil diambil."
         ));
     }
 
