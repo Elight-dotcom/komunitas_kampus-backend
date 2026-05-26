@@ -11,5 +11,6 @@ public sealed record StoryDto(
     string? MediaUrl,
     string? TextContent,
     DateTime ExpiresAt,
-    bool IsViewed
+    bool IsViewed,
+    int ViewCount
 );

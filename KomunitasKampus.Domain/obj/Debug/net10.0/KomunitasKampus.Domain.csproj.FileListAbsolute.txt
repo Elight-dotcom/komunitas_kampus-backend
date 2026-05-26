@@ -1,0 +1,24 @@
+C:\Project\KomunitasKampus\backend\KomunitasKampus.Domain\bin\Debug\net10.0\KomunitasKampus.Domain.deps.json
+C:\Project\KomunitasKampus\backend\KomunitasKampus.Domain\bin\Debug\net10.0\KomunitasKampus.Domain.dll
+C:\Project\KomunitasKampus\backend\KomunitasKampus.Domain\bin\Debug\net10.0\KomunitasKampus.Domain.pdb
+C:\Project\KomunitasKampus\backend\KomunitasKampus.Domain\obj\Debug\net10.0\KomunitasKampus.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Project\KomunitasKampus\backend\KomunitasKampus.Domain\obj\Debug\net10.0\KomunitasKampus.Domain.AssemblyInfoInputs.cache
+C:\Project\KomunitasKampus\backend\KomunitasKampus.Domain\obj\Debug\net10.0\KomunitasKampus.Domain.AssemblyInfo.cs
+C:\Project\KomunitasKampus\backend\KomunitasKampus.Domain\obj\Debug\net10.0\KomunitasKampus.Domain.csproj.CoreCompileInputs.cache
+C:\Project\KomunitasKampus\backend\KomunitasKampus.Domain\obj\Debug\net10.0\KomunitasKampus.Domain.dll
+C:\Project\KomunitasKampus\backend\KomunitasKampus.Domain\obj\Debug\net10.0\refint\KomunitasKampus.Domain.dll
+C:\Project\KomunitasKampus\backend\KomunitasKampus.Domain\obj\Debug\net10.0\KomunitasKampus.Domain.pdb
+C:\Project\KomunitasKampus\backend\KomunitasKampus.Domain\obj\Debug\net10.0\ref\KomunitasKampus.Domain.dll
+C:\Project\KomunitasKampus\backend\KomunitasKampus.Domain\obj\Debug\net10.0\KomunitasKampus.Domain.sourcelink.json
+c:\semester 4\Aplikasi Berbasis Web\projek_uas\komunitas_kampus-backend\KomunitasKampus.Domain\bin\Debug\net10.0\KomunitasKampus.Domain.deps.json
+C:\semester 4\Aplikasi Berbasis Web\projek_uas\komunitas_kampus-backend\KomunitasKampus.Domain\bin\Debug\net10.0\KomunitasKampus.Domain.dll
+C:\semester 4\Aplikasi Berbasis Web\projek_uas\komunitas_kampus-backend\KomunitasKampus.Domain\bin\Debug\net10.0\KomunitasKampus.Domain.pdb
+C:\semester 4\Aplikasi Berbasis Web\projek_uas\komunitas_kampus-backend\KomunitasKampus.Domain\obj\Debug\net10.0\KomunitasKampus.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\semester 4\Aplikasi Berbasis Web\projek_uas\komunitas_kampus-backend\KomunitasKampus.Domain\obj\Debug\net10.0\KomunitasKampus.Domain.AssemblyInfoInputs.cache
+C:\semester 4\Aplikasi Berbasis Web\projek_uas\komunitas_kampus-backend\KomunitasKampus.Domain\obj\Debug\net10.0\KomunitasKampus.Domain.AssemblyInfo.cs
+C:\semester 4\Aplikasi Berbasis Web\projek_uas\komunitas_kampus-backend\KomunitasKampus.Domain\obj\Debug\net10.0\KomunitasKampus.Domain.csproj.CoreCompileInputs.cache
+C:\semester 4\Aplikasi Berbasis Web\projek_uas\komunitas_kampus-backend\KomunitasKampus.Domain\obj\Debug\net10.0\KomunitasKampus.Domain.sourcelink.json
+C:\semester 4\Aplikasi Berbasis Web\projek_uas\komunitas_kampus-backend\KomunitasKampus.Domain\obj\Debug\net10.0\KomunitasKampus.Domain.dll
+C:\semester 4\Aplikasi Berbasis Web\projek_uas\komunitas_kampus-backend\KomunitasKampus.Domain\obj\Debug\net10.0\refint\KomunitasKampus.Domain.dll
+C:\semester 4\Aplikasi Berbasis Web\projek_uas\komunitas_kampus-backend\KomunitasKampus.Domain\obj\Debug\net10.0\KomunitasKampus.Domain.pdb
+c:\semester 4\Aplikasi Berbasis Web\projek_uas\komunitas_kampus-backend\KomunitasKampus.Domain\obj\Debug\net10.0\ref\KomunitasKampus.Domain.dll

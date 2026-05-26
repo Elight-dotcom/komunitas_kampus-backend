@@ -5,6 +5,7 @@ public interface INotificationService
     Task SendMembershipNotificationAsync(
         Guid accountId,
         Guid organizationId,
+        Guid membershipId,
         string notificationType,
         CancellationToken cancellationToken = default
     );

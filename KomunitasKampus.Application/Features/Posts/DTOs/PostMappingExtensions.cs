@@ -9,6 +9,8 @@ public static class PostMappingExtensions
         return new PostDto(
             Id: post.Id,
             OrganizationId: post.OrganizationId,
+            OrganizationName: post.Organization?.OrganizationName ?? string.Empty,
+            OrganizationAvatarUrl: null, // Organization entity doesn't have AvatarUrl
             Title: post.Title,
             Caption: post.Caption,
             IsPinned: post.IsPinned,

@@ -12,5 +12,5 @@ public class Share : BaseEntity
 
     public Post? Post { get; set; }
 
-    public User? User { get; set; }
+    public Account? User { get; set; }
 }

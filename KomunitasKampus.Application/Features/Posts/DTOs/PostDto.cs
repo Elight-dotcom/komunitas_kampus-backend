@@ -3,6 +3,8 @@ namespace KomunitasKampus.Application.Features.Posts.DTOs;
 public sealed record PostDto(
     Guid Id,
     Guid OrganizationId,
+    string OrganizationName,
+    string? OrganizationAvatarUrl,
     string Title,
     string? Caption,
     bool IsPinned,

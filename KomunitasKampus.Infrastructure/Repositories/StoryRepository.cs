@@ -115,6 +115,27 @@ public class StoryRepository : IStoryRepository
         return orderedStories;
     }
 
+    public async Task<IReadOnlyList<Story>> GetActiveStoriesByOrganizationAsync(
+        Guid organizationId,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var utcNow = DateTime.UtcNow;
+
+        return await _context.Stories
+            .AsNoTracking()
+            .Include(story => story.Organization)
+                .ThenInclude(organization => organization!.Account)
+            .Include(story => story.Views)
+            .Where(story =>
+                story.OrganizationId == organizationId &&
+                story.IsExpired == false &&
+                story.ExpiresAt > utcNow
+            )
+            .OrderBy(story => story.CreatedAt)
+            .ToListAsync(cancellationToken);
+    }
+
     public async Task<Story?> GetByIdAsync(
         Guid storyId,
         CancellationToken cancellationToken = default

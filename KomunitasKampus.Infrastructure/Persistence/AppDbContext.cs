@@ -535,6 +535,7 @@ public class AppDbContext : DbContext
             entity.HasOne(like => like.User)
                 .WithMany()
                 .HasForeignKey(like => like.UserId)
+                .HasPrincipalKey(account => account.Id)
                 .OnDelete(DeleteBehavior.Restrict);
 
             entity.HasIndex(like => new
@@ -668,6 +669,7 @@ public class AppDbContext : DbContext
             entity.HasOne(share => share.User)
                 .WithMany()
                 .HasForeignKey(share => share.UserId)
+                .HasPrincipalKey(account => account.Id)
                 .OnDelete(DeleteBehavior.Restrict);
 
             entity.HasIndex(share => new

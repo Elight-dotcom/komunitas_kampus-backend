@@ -98,6 +98,7 @@ public class RespondToInviteCommandHandler
         await _notificationService.SendMembershipNotificationAsync(
             membership.AccountId,
             membership.OrganizationId,
+            membership.Id,
             MembershipAccessRules.GetNotificationTypeForInviteResponse(nextStatus),
             cancellationToken
         );

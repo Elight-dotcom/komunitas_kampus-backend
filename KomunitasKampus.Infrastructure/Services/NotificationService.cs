@@ -24,6 +24,7 @@ public class NotificationService : INotificationService
     public async Task SendMembershipNotificationAsync(
         Guid accountId,
         Guid organizationId,
+        Guid membershipId,
         string notificationType,
         CancellationToken cancellationToken = default
     )
@@ -37,7 +38,7 @@ public class NotificationService : INotificationService
             recipientId: accountId,
             actorId: organizationActorId,
             type: notificationType,
-            referenceId: organizationId,
+            referenceId: membershipId,
             cancellationToken: cancellationToken
         );
     }
