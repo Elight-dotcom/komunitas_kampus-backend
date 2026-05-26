@@ -9,6 +9,11 @@ public interface IStoryRepository
         CancellationToken cancellationToken = default
     );
 
+    Task<IReadOnlyList<Story>> GetActiveStoriesByOrganizationAsync(
+        Guid organizationId,
+        CancellationToken cancellationToken = default
+    );
+
     Task<Story?> GetByIdAsync(
         Guid storyId,
         CancellationToken cancellationToken = default

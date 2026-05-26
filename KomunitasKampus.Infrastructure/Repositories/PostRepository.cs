@@ -79,6 +79,53 @@ public class PostRepository : IPostRepository
             .ToListAsync(cancellationToken);
     }
 
+    public async Task<IReadOnlyList<Post>> GetGlobalFeedAsync(
+        Guid? viewerAccountId,
+        string? viewerRole,
+        Guid? viewerOrganizationId,
+        int page,
+        int pageSize,
+        CancellationToken cancellationToken = default
+    )
+    {
+        page = page <= 0 ? 1 : page;
+        pageSize = pageSize <= 0 ? 10 : pageSize;
+
+        var isOrganizationRole = viewerRole?.Trim().ToLowerInvariant() is "organisasi" or "organization";
+
+        var query = _context.Posts
+            .AsNoTracking()
+            .Include(post => post.Organization)
+            .Include(post => post.Media.OrderBy(media => media.OrderIndex))
+            .Where(post => post.DeletedAt == null);
+
+        // For organization viewers, show all posts (public, internal, private from their org)
+        // For regular users, show only public posts and internal posts they're members of
+        if (!isOrganizationRole || !viewerOrganizationId.HasValue)
+        {
+            if (viewerAccountId.HasValue && viewerOrganizationId.HasValue)
+            {
+                // User is a member of some organization - show public + internal posts
+                query = query.Where(post =>
+                    post.Visibility == PostVisibility.Public ||
+                    post.Visibility == PostVisibility.Internal);
+            }
+            else
+            {
+                // Anonymous or non-member - show only public posts
+                query = query.Where(post => post.Visibility == PostVisibility.Public);
+            }
+        }
+
+        return await query
+            .OrderByDescending(post => post.IsPinned)
+            .ThenBy(post => post.IsPinned ? post.PinOrder ?? int.MaxValue : int.MaxValue)
+            .ThenByDescending(post => post.CreatedAt)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync(cancellationToken);
+    }
+
     public async Task<Post?> GetByIdAsync(
         Guid postId,
         CancellationToken cancellationToken = default

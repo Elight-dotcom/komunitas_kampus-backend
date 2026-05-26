@@ -98,6 +98,7 @@ public class ResolveMembershipCommandHandler
         await _notificationService.SendMembershipNotificationAsync(
             membership.AccountId,
             membership.OrganizationId,
+            membership.Id,
             MembershipAccessRules.GetNotificationTypeForJoinRequest(nextStatus),
             cancellationToken
         );

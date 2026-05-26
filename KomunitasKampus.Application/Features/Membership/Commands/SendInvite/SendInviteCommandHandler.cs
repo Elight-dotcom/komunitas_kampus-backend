@@ -1,4 +1,5 @@
 using KomunitasKampus.Application.Common.Exceptions;
+using KomunitasKampus.Application.Common.Interfaces;
 using KomunitasKampus.Application.Features.Membership.DTOs;
 using KomunitasKampus.Domain.Enums;
 using KomunitasKampus.Domain.Interfaces;
@@ -10,14 +11,17 @@ public class SendInviteCommandHandler : IRequestHandler<SendInviteCommand, Invit
 {
     private readonly IMembershipRepository _membershipRepository;
     private readonly IAccountRepository _accountRepository;
+    private readonly INotificationService _notificationService;
 
     public SendInviteCommandHandler(
         IMembershipRepository membershipRepository,
-        IAccountRepository accountRepository
+        IAccountRepository accountRepository,
+        INotificationService notificationService
     )
     {
         _membershipRepository = membershipRepository;
         _accountRepository = accountRepository;
+        _notificationService = notificationService;
     }
 
     public async Task<InviteDto> Handle(
@@ -83,6 +87,14 @@ public class SendInviteCommandHandler : IRequestHandler<SendInviteCommand, Invit
         };
 
         await _membershipRepository.CreateAsync(membership, cancellationToken);
+
+        await _notificationService.SendMembershipNotificationAsync(
+            targetAccount.Id,
+            request.OrganizationId,
+            membership.Id,
+            "invite_sent",
+            cancellationToken
+        );
 
         return membership.ToInviteDto();
     }

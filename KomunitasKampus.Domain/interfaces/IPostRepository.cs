@@ -13,6 +13,15 @@ public interface IPostRepository
         CancellationToken cancellationToken = default
     );
 
+    Task<IReadOnlyList<Post>> GetGlobalFeedAsync(
+        Guid? viewerAccountId,
+        string? viewerRole,
+        Guid? viewerOrganizationId,
+        int page,
+        int pageSize,
+        CancellationToken cancellationToken = default
+    );
+
     Task<Post?> GetByIdAsync(
         Guid postId,
         CancellationToken cancellationToken = default

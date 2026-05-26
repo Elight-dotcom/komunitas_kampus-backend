@@ -34,6 +34,7 @@ public static class DependencyInjection
         AddRepositories(services);
         AddPostInfrastructure(services, configuration);
         services.AddScoped<IMembershipRepository, MembershipRepository>();
+        services.AddScoped<INotificationRepository, NotificationRepository>();
         services.AddScoped<IChatService, ChatService>();
         services.AddScoped<INotificationService, NotificationService>();
         services.AddScoped<ILikeRepository, LikeRepository>();
@@ -215,5 +216,6 @@ public static class DependencyInjection
     private static void AddRepositories(IServiceCollection services)
     {
         services.AddScoped<IAccountRepository, AccountRepository>();
+        services.AddScoped<IOrganizationRepository, OrganizationRepository>();
     }
 }

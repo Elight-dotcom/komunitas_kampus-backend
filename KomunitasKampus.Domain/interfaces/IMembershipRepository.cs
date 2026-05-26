@@ -1,3 +1,4 @@
+using System.Threading;
 using KomunitasKampus.Domain.Entities;
 using KomunitasKampus.Domain.Enums;
 
@@ -23,6 +24,11 @@ public interface IMembershipRepository
     Task<Membership?> GetByAccountAndOrgAsync(
         Guid accountId,
         Guid organizationId,
+        CancellationToken cancellationToken = default
+    );
+
+    Task<Membership?> GetByIdWithOrganizationAsync(
+        Guid membershipId,
         CancellationToken cancellationToken = default
     );
 
@@ -52,6 +58,11 @@ public interface IMembershipRepository
 
     Task<IReadOnlyList<Membership>> GetInvitationsAsync(
         Guid accountId,
+        CancellationToken cancellationToken = default
+    );
+
+    Task<IReadOnlyList<Membership>> GetSentInvitationsAsync(
+        Guid organizationId,
         CancellationToken cancellationToken = default
     );
 }
