@@ -5,6 +5,7 @@ using KomunitasKampus.Application.Features.Stories.Commands.GeneratePresignedUpl
 using KomunitasKampus.Application.Features.Stories.Commands.MarkStoryViewed;
 using KomunitasKampus.Application.Features.Stories.DTOs;
 using KomunitasKampus.Application.Features.Stories.Queries.GetActiveStories;
+using KomunitasKampus.Application.Features.Stories.Queries.GetMyOrganizationStories;
 using KomunitasKampus.Application.Features.Stories.Queries.GetStoryById;
 using KomunitasKampus.Domain.Enums;
 using MediatR;
@@ -48,6 +49,30 @@ public class StoriesController : ControllerBase
         return Ok(ApiResponse<IReadOnlyList<StoryGroupDto>>.Ok(
             result,
             "Stories aktif berhasil diambil."
+        ));
+    }
+
+    [HttpGet("api/organizations/{orgId:guid}/stories")]
+    [Authorize(Roles = "organization")]
+    [ProducesResponseType(typeof(ApiResponse<IReadOnlyList<StoryDto>>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetMyOrganizationStories(
+        Guid orgId,
+        CancellationToken cancellationToken
+    )
+    {
+        if (!IsRequesterOrganization(orgId))
+        {
+            return Forbid();
+        }
+
+        var result = await _sender.Send(
+            new GetMyOrganizationStoriesQuery(orgId),
+            cancellationToken
+        );
+
+        return Ok(ApiResponse<IReadOnlyList<StoryDto>>.Ok(
+            result,
+            "Story organisasi berhasil diambil."
         ));
     }
 
