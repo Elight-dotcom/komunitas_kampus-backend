@@ -67,7 +67,7 @@ public class CreatePostCommandHandler : IRequestHandler<CreatePostCommand, Creat
                 FileUrl = mediaRequest.FileName,
                 FileSizeBytes = mediaRequest.FileSizeBytes,
                 OrderIndex = mediaRequest.OrderIndex,
-                Status = PostMediaStatus.Loading
+                Status = PostMediaStatus.Ready // File sudah ter-upload ke MinIO via presigned URL
             });
 
             uploads.Add(new PresignedUploadDto(

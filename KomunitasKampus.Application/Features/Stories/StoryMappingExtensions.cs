@@ -13,6 +13,8 @@ public static class StoryMappingExtensions
         var isViewed = viewerAccountId.HasValue &&
             story.Views.Any(view => view.AccountId == viewerAccountId.Value);
 
+        var viewCount = story.Views?.Count ?? 0;
+
         return new StoryDto(
             Id: story.Id,
             OrganizationId: story.OrganizationId,
@@ -22,7 +24,8 @@ public static class StoryMappingExtensions
             MediaUrl: story.MediaUrl,
             TextContent: story.TextContent,
             ExpiresAt: story.ExpiresAt,
-            IsViewed: isViewed
+            IsViewed: isViewed,
+            ViewCount: viewCount
         );
     }
 

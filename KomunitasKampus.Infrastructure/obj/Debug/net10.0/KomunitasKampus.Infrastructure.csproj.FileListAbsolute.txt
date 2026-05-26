@@ -18,3 +18,23 @@ C:\Project\KomunitasKampus\backend\KomunitasKampus.Infrastructure\obj\Debug\net1
 C:\Project\KomunitasKampus\backend\KomunitasKampus.Infrastructure\obj\Debug\net10.0\KomunitasKampus.Infrastructure.genruntimeconfig.cache
 C:\Project\KomunitasKampus\backend\KomunitasKampus.Infrastructure\obj\Debug\net10.0\ref\KomunitasKampus.Infrastructure.dll
 C:\Project\KomunitasKampus\backend\KomunitasKampus.Infrastructure\obj\Debug\net10.0\KomunitasKampus.Infrastructure.sourcelink.json
+c:\semester 4\Aplikasi Berbasis Web\projek_uas\komunitas_kampus-backend\KomunitasKampus.Infrastructure\bin\Debug\net10.0\KomunitasKampus.Infrastructure.deps.json
+c:\semester 4\Aplikasi Berbasis Web\projek_uas\komunitas_kampus-backend\KomunitasKampus.Infrastructure\bin\Debug\net10.0\KomunitasKampus.Infrastructure.runtimeconfig.json
+C:\semester 4\Aplikasi Berbasis Web\projek_uas\komunitas_kampus-backend\KomunitasKampus.Infrastructure\bin\Debug\net10.0\KomunitasKampus.Infrastructure.dll
+C:\semester 4\Aplikasi Berbasis Web\projek_uas\komunitas_kampus-backend\KomunitasKampus.Infrastructure\bin\Debug\net10.0\KomunitasKampus.Infrastructure.pdb
+C:\semester 4\Aplikasi Berbasis Web\projek_uas\komunitas_kampus-backend\KomunitasKampus.Infrastructure\bin\Debug\net10.0\KomunitasKampus.Application.dll
+C:\semester 4\Aplikasi Berbasis Web\projek_uas\komunitas_kampus-backend\KomunitasKampus.Infrastructure\bin\Debug\net10.0\KomunitasKampus.Domain.dll
+C:\semester 4\Aplikasi Berbasis Web\projek_uas\komunitas_kampus-backend\KomunitasKampus.Infrastructure\bin\Debug\net10.0\KomunitasKampus.Domain.pdb
+C:\semester 4\Aplikasi Berbasis Web\projek_uas\komunitas_kampus-backend\KomunitasKampus.Infrastructure\bin\Debug\net10.0\KomunitasKampus.Application.pdb
+C:\semester 4\Aplikasi Berbasis Web\projek_uas\komunitas_kampus-backend\KomunitasKampus.Infrastructure\obj\Debug\net10.0\KomunitasKampus.Infrastructure.csproj.AssemblyReference.cache
+C:\semester 4\Aplikasi Berbasis Web\projek_uas\komunitas_kampus-backend\KomunitasKampus.Infrastructure\obj\Debug\net10.0\KomunitasKampus.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+C:\semester 4\Aplikasi Berbasis Web\projek_uas\komunitas_kampus-backend\KomunitasKampus.Infrastructure\obj\Debug\net10.0\KomunitasKampus.Infrastructure.AssemblyInfoInputs.cache
+C:\semester 4\Aplikasi Berbasis Web\projek_uas\komunitas_kampus-backend\KomunitasKampus.Infrastructure\obj\Debug\net10.0\KomunitasKampus.Infrastructure.AssemblyInfo.cs
+C:\semester 4\Aplikasi Berbasis Web\projek_uas\komunitas_kampus-backend\KomunitasKampus.Infrastructure\obj\Debug\net10.0\KomunitasKampus.Infrastructure.csproj.CoreCompileInputs.cache
+C:\semester 4\Aplikasi Berbasis Web\projek_uas\komunitas_kampus-backend\KomunitasKampus.Infrastructure\obj\Debug\net10.0\KomunitasKampus.Infrastructure.sourcelink.json
+c:\semester 4\Aplikasi Berbasis Web\projek_uas\komunitas_kampus-backend\KomunitasKampus.Infrastructure\obj\Debug\net10.0\Komunita.03C04475.Up2Date
+C:\semester 4\Aplikasi Berbasis Web\projek_uas\komunitas_kampus-backend\KomunitasKampus.Infrastructure\obj\Debug\net10.0\KomunitasKampus.Infrastructure.dll
+C:\semester 4\Aplikasi Berbasis Web\projek_uas\komunitas_kampus-backend\KomunitasKampus.Infrastructure\obj\Debug\net10.0\refint\KomunitasKampus.Infrastructure.dll
+C:\semester 4\Aplikasi Berbasis Web\projek_uas\komunitas_kampus-backend\KomunitasKampus.Infrastructure\obj\Debug\net10.0\KomunitasKampus.Infrastructure.pdb
+c:\semester 4\Aplikasi Berbasis Web\projek_uas\komunitas_kampus-backend\KomunitasKampus.Infrastructure\obj\Debug\net10.0\KomunitasKampus.Infrastructure.genruntimeconfig.cache
+c:\semester 4\Aplikasi Berbasis Web\projek_uas\komunitas_kampus-backend\KomunitasKampus.Infrastructure\obj\Debug\net10.0\ref\KomunitasKampus.Infrastructure.dll

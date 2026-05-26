@@ -1,3 +1,4 @@
+using System.Threading;
 using KomunitasKampus.Domain.Entities;
 using KomunitasKampus.Domain.Enums;
 using KomunitasKampus.Domain.Interfaces;
@@ -88,6 +89,20 @@ public class MembershipRepository : IMembershipRepository
             .FirstOrDefaultAsync(cancellationToken);
     }
 
+    public async Task<Membership?> GetByIdWithOrganizationAsync(
+        Guid membershipId,
+        CancellationToken cancellationToken = default
+    )
+    {
+        return await _context.Memberships
+            .Include(membership => membership.Organization)
+                .ThenInclude(organization => organization!.Account)
+            .FirstOrDefaultAsync(
+                membership => membership.Id == membershipId,
+                cancellationToken
+            );
+    }
+
     public async Task CreateAsync(
         Membership membership,
         CancellationToken cancellationToken = default
@@ -173,6 +188,24 @@ public class MembershipRepository : IMembershipRepository
                 membership.AccountId == accountId &&
                 membership.InviteType == MembershipInviteType.Invite &&
                 membership.Status == MembershipStatus.Pending
+            )
+            .OrderByDescending(membership => membership.RequestedAt)
+            .ToListAsync(cancellationToken);
+    }
+
+    public async Task<IReadOnlyList<Membership>> GetSentInvitationsAsync(
+        Guid organizationId,
+        CancellationToken cancellationToken = default
+    )
+    {
+        return await _context.Memberships
+            .AsNoTracking()
+            .Include(membership => membership.Account)
+                .ThenInclude(account => account!.User)
+            .Include(membership => membership.Organization)
+            .Where(membership =>
+                membership.OrganizationId == organizationId &&
+                membership.InviteType == MembershipInviteType.Invite
             )
             .OrderByDescending(membership => membership.RequestedAt)
             .ToListAsync(cancellationToken);
