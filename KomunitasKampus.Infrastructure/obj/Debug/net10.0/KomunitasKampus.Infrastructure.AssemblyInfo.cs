@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("KomunitasKampus.Infrastructure")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+60ce90ad3dbc1ecd7d9a25dd8289048fb69e639c")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c0b907bf5a423f4c8134e9dab6ab4b44644bb22d")]
 [assembly: System.Reflection.AssemblyProductAttribute("KomunitasKampus.Infrastructure")]
 [assembly: System.Reflection.AssemblyTitleAttribute("KomunitasKampus.Infrastructure")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

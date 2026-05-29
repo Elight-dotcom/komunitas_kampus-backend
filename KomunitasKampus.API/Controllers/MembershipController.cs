@@ -10,8 +10,10 @@ using KomunitasKampus.Application.Features.Membership.Queries.GetMemberList;
 using KomunitasKampus.Application.Features.Membership.Queries.GetMembershipStatus;
 using KomunitasKampus.Application.Features.Membership.Queries.GetPendingRequests;
 using KomunitasKampus.Application.Features.Membership.Queries.GetSentInvitations;
+using KomunitasKampus.Application.Features.Membership.Queries.SearchStudentAccounts;
 using KomunitasKampus.API.Contracts.Membership;
 using KomunitasKampus.API.Models;
+using KomunitasKampus.Domain.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -25,10 +27,15 @@ public class MembershipController : ControllerBase
     private const string OrganizationRoles = "organization,organisasi";
 
     private readonly IMediator _mediator;
+    private readonly IMembershipEventPublisher _membershipEventPublisher;
 
-    public MembershipController(IMediator mediator)
+    public MembershipController(
+        IMediator mediator,
+        IMembershipEventPublisher membershipEventPublisher
+    )
     {
         _mediator = mediator;
+        _membershipEventPublisher = membershipEventPublisher;
     }
 
     // =========================
@@ -160,6 +167,15 @@ public class MembershipController : ControllerBase
             cancellationToken
         );
 
+        if (result.Status == "Accepted")
+        {
+            await _membershipEventPublisher.PublishMemberAcceptedAsync(
+                accountId,
+                result.OrganizationId,
+                cancellationToken
+            );
+        }
+
         return Ok(ApiResponse<InviteDto>.Ok(
             result,
             $"Undangan berhasil di-{request.Action.ToLowerInvariant()}."
@@ -236,6 +252,34 @@ public class MembershipController : ControllerBase
     }
 
     [Authorize(Roles = OrganizationRoles)]
+    [HttpGet("api/organizations/{orgId:guid}/students/search")]
+    [ProducesResponseType(typeof(ApiResponse<IReadOnlyList<StudentSearchResultDto>>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> SearchStudentAccounts(
+        Guid orgId,
+        [FromQuery] string username,
+        [FromQuery] int limit = 10,
+        CancellationToken cancellationToken = default
+    )
+    {
+        EnsureOrganizationAccess(orgId);
+
+        var result = await _mediator.Send(
+            new SearchStudentAccountsQuery(
+                Username: username,
+                Limit: limit
+            ),
+            cancellationToken
+        );
+
+        return Ok(ApiResponse<IReadOnlyList<StudentSearchResultDto>>.Ok(
+            result,
+            "Pencarian mahasiswa berhasil diambil."
+        ));
+    }
+
+    [Authorize(Roles = OrganizationRoles)]
     [HttpPost("api/organizations/{orgId:guid}/invite")]
     [ProducesResponseType(typeof(ApiResponse<InviteDto>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status403Forbidden)]
@@ -285,6 +329,15 @@ public class MembershipController : ControllerBase
             ),
             cancellationToken
         );
+
+        if (result.Status == "Accepted")
+        {
+            await _membershipEventPublisher.PublishMemberAcceptedAsync(
+                result.AccountId,
+                result.OrganizationId,
+                cancellationToken
+            );
+        }
 
         return Ok(ApiResponse<MembershipDto>.Ok(
             result,

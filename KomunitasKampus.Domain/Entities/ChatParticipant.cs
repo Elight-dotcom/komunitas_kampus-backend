@@ -8,7 +8,7 @@ public class ChatParticipant : BaseEntity
 
     public DateTime JoinedAt { get; set; } = DateTime.UtcNow;
 
-    public ChatRoom? Room { get; set; }
+    public ChatRoom? ChatRoom { get; set; }
 
     public Account? Account { get; set; }
 }

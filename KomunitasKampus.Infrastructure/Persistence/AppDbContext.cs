@@ -864,7 +864,7 @@ public class AppDbContext : DbContext
             entity.Property(participant => participant.JoinedAt)
                 .IsRequired();
 
-            entity.HasOne(participant => participant.Room)
+            entity.HasOne(participant => participant.ChatRoom)
                 .WithMany(room => room.Participants)
                 .HasForeignKey(participant => participant.RoomId)
                 .OnDelete(DeleteBehavior.Restrict);
@@ -921,7 +921,7 @@ public class AppDbContext : DbContext
             entity.Property(readStatus => readStatus.LastReadAt)
                 .IsRequired();
 
-            entity.HasOne(readStatus => readStatus.Room)
+            entity.HasOne(readStatus => readStatus.ChatRoom)
                 .WithMany(room => room.ReadStatuses)
                 .HasForeignKey(readStatus => readStatus.RoomId)
                 .OnDelete(DeleteBehavior.Restrict);

@@ -1,33 +1,35 @@
 {
   "format": 1,
   "restore": {
-    "C:\\semester 4\\Aplikasi Berbasis Web\\projek_uas\\komunitas_kampus-backend\\KomunitasKampus.Application\\KomunitasKampus.Application.csproj": {}
+    "C:\\Project\\KomunitasKampus\\backend\\KomunitasKampus.Application\\KomunitasKampus.Application.csproj": {}
   },
   "projects": {
-    "C:\\semester 4\\Aplikasi Berbasis Web\\projek_uas\\komunitas_kampus-backend\\KomunitasKampus.Application\\KomunitasKampus.Application.csproj": {
+    "C:\\Project\\KomunitasKampus\\backend\\KomunitasKampus.Application\\KomunitasKampus.Application.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\semester 4\\Aplikasi Berbasis Web\\projek_uas\\komunitas_kampus-backend\\KomunitasKampus.Application\\KomunitasKampus.Application.csproj",
+        "projectUniqueName": "C:\\Project\\KomunitasKampus\\backend\\KomunitasKampus.Application\\KomunitasKampus.Application.csproj",
         "projectName": "KomunitasKampus.Application",
-        "projectPath": "C:\\semester 4\\Aplikasi Berbasis Web\\projek_uas\\komunitas_kampus-backend\\KomunitasKampus.Application\\KomunitasKampus.Application.csproj",
-        "packagesPath": "C:\\Users\\ASUS\\.nuget\\packages\\",
-        "outputPath": "C:\\semester 4\\Aplikasi Berbasis Web\\projek_uas\\komunitas_kampus-backend\\KomunitasKampus.Application\\obj\\",
+        "projectPath": "C:\\Project\\KomunitasKampus\\backend\\KomunitasKampus.Application\\KomunitasKampus.Application.csproj",
+        "packagesPath": "C:\\Users\\ardan\\.nuget\\packages\\",
+        "outputPath": "C:\\Project\\KomunitasKampus\\backend\\KomunitasKampus.Application\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\ASUS\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\ardan\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net10.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net10.0": {
             "targetAlias": "net10.0",
             "projectReferences": {
-              "C:\\semester 4\\Aplikasi Berbasis Web\\projek_uas\\komunitas_kampus-backend\\KomunitasKampus.Domain\\KomunitasKampus.Domain.csproj": {
-                "projectPath": "C:\\semester 4\\Aplikasi Berbasis Web\\projek_uas\\komunitas_kampus-backend\\KomunitasKampus.Domain\\KomunitasKampus.Domain.csproj"
+              "C:\\Project\\KomunitasKampus\\backend\\KomunitasKampus.Domain\\KomunitasKampus.Domain.csproj": {
+                "projectPath": "C:\\Project\\KomunitasKampus\\backend\\KomunitasKampus.Domain\\KomunitasKampus.Domain.csproj"
               }
             }
           }
@@ -85,7 +87,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.103/PortableRuntimeIdentifierGraph.json",
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.102/PortableRuntimeIdentifierGraph.json",
           "packagesToPrune": {
             "Microsoft.CSharp": "(,4.7.32767]",
             "Microsoft.VisualBasic": "(,10.4.32767]",
@@ -363,22 +365,24 @@
         }
       }
     },
-    "C:\\semester 4\\Aplikasi Berbasis Web\\projek_uas\\komunitas_kampus-backend\\KomunitasKampus.Domain\\KomunitasKampus.Domain.csproj": {
+    "C:\\Project\\KomunitasKampus\\backend\\KomunitasKampus.Domain\\KomunitasKampus.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\semester 4\\Aplikasi Berbasis Web\\projek_uas\\komunitas_kampus-backend\\KomunitasKampus.Domain\\KomunitasKampus.Domain.csproj",
+        "projectUniqueName": "C:\\Project\\KomunitasKampus\\backend\\KomunitasKampus.Domain\\KomunitasKampus.Domain.csproj",
         "projectName": "KomunitasKampus.Domain",
-        "projectPath": "C:\\semester 4\\Aplikasi Berbasis Web\\projek_uas\\komunitas_kampus-backend\\KomunitasKampus.Domain\\KomunitasKampus.Domain.csproj",
-        "packagesPath": "C:\\Users\\ASUS\\.nuget\\packages\\",
-        "outputPath": "C:\\semester 4\\Aplikasi Berbasis Web\\projek_uas\\komunitas_kampus-backend\\KomunitasKampus.Domain\\obj\\",
+        "projectPath": "C:\\Project\\KomunitasKampus\\backend\\KomunitasKampus.Domain\\KomunitasKampus.Domain.csproj",
+        "packagesPath": "C:\\Users\\ardan\\.nuget\\packages\\",
+        "outputPath": "C:\\Project\\KomunitasKampus\\backend\\KomunitasKampus.Domain\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\ASUS\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\ardan\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net10.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -418,7 +422,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.103/PortableRuntimeIdentifierGraph.json",
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.102/PortableRuntimeIdentifierGraph.json",
           "packagesToPrune": {
             "Microsoft.CSharp": "(,4.7.32767]",
             "Microsoft.VisualBasic": "(,10.4.32767]",

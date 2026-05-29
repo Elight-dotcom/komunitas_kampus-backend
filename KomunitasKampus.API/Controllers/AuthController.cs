@@ -7,6 +7,7 @@ using KomunitasKampus.Application.Features.Auth.Commands.RefreshToken;
 using KomunitasKampus.Application.Features.Auth.Commands.RegisterOrganization;
 using KomunitasKampus.Application.Features.Auth.Commands.RegisterUser;
 using KomunitasKampus.Application.Features.Auth.DTOs;
+using KomunitasKampus.Application.Features.Auth.Queries.CheckUsernameAvailability;
 using KomunitasKampus.Infrastructure.Authentication;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -96,6 +97,35 @@ public class AuthController : ControllerBase
         catch (ValidationAppException exception)
         {
             return BadRequest(ApiResponse<RegisterUserResponse>.Fail(
+                exception.Message,
+                exception.Errors
+            ));
+        }
+    }
+
+    [HttpGet("username-availability")]
+    [ProducesResponseType(typeof(ApiResponse<UsernameAvailabilityDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiResponse<UsernameAvailabilityDto>), StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> CheckUsernameAvailability(
+        [FromQuery] string username,
+        CancellationToken cancellationToken
+    )
+    {
+        try
+        {
+            var result = await _sender.Send(
+                new CheckUsernameAvailabilityQuery(username),
+                cancellationToken
+            );
+
+            return Ok(ApiResponse<UsernameAvailabilityDto>.Ok(
+                result,
+                "Ketersediaan username berhasil dicek."
+            ));
+        }
+        catch (ValidationAppException exception)
+        {
+            return BadRequest(ApiResponse<UsernameAvailabilityDto>.Fail(
                 exception.Message,
                 exception.Errors
             ));

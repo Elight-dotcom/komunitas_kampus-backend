@@ -15,6 +15,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using KomunitasKampus.Infrastructure.HangfireJobs;
+using KomunitasKampus.Infrastructure.BackgroundJobs;
 using KomunitasKampus.Infrastructure.Storage;
 using Microsoft.Extensions.Options;
 using Minio;
@@ -33,6 +34,16 @@ public static class DependencyInjection
         AddAuthenticationServices(services, configuration);
         AddRepositories(services);
         AddPostInfrastructure(services, configuration);
+
+        var redisConnectionString = configuration["Redis:ConnectionString"];
+
+        if (string.IsNullOrWhiteSpace(redisConnectionString))
+        {
+            throw new InvalidOperationException(
+                "Redis:ConnectionString belum dikonfigurasi di appsettings.json atau environment variable."
+            );
+        }
+
         services.AddScoped<IMembershipRepository, MembershipRepository>();
         services.AddScoped<INotificationRepository, NotificationRepository>();
         services.AddScoped<IChatService, ChatService>();
@@ -45,6 +56,16 @@ public static class DependencyInjection
         services.AddScoped<StoryExpirationJob>();
         services.AddScoped<IStoryBackgroundJobScheduler, StoryBackgroundJobScheduler>();
         services.AddScoped<IInteractionRealtimeNotifier, InteractionRealtimeNotifier>();
+        services.AddScoped<IChatRoomRepository, ChatRoomRepository>();
+        services.AddScoped<IMessageRepository, MessageRepository>();
+        services.AddScoped<IChatReadStatusRepository, ChatReadStatusRepository>();
+        services.AddScoped<IChatAccountRepository, ChatAccountRepository>();
+        services.AddScoped<IMembershipEventPublisher, MembershipEventHandler>();
+
+        services.AddSingleton<IConnectionMultiplexer>(_ =>
+            ConnectionMultiplexer.Connect(redisConnectionString)
+        );
+
 
         services.AddSingleton<RedisCommentCacheService>();
         services.AddSingleton<RedisStoryCacheService>();
@@ -58,6 +79,17 @@ public static class DependencyInjection
 
             return ConnectionMultiplexer.Connect(redisConnectionString);
         });
+
+        services
+            .AddSignalR()
+            .AddStackExchangeRedis(
+                redisConnectionString,
+                options =>
+                {
+                    options.Configuration.ChannelPrefix =
+                        RedisChannel.Literal("KomunitasKampus");
+                }
+            );
 
         var hangfireConnectionString =
             configuration.GetConnectionString("DefaultConnection") ??
@@ -216,6 +248,10 @@ public static class DependencyInjection
     private static void AddRepositories(IServiceCollection services)
     {
         services.AddScoped<IAccountRepository, AccountRepository>();
+        services.AddScoped<IChatAccountRepository, AccountRepository>();
         services.AddScoped<IOrganizationRepository, OrganizationRepository>();
+        services.AddScoped<IChatRoomRepository, ChatRoomRepository>();
+        services.AddScoped<IMessageRepository, MessageRepository>();
+        services.AddScoped<IChatReadStatusRepository, ChatReadStatusRepository>();
     }
 }

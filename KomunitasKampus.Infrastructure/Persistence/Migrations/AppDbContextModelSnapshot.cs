@@ -915,7 +915,7 @@ namespace KomunitasKampus.Infrastructure.Persistence.Migrations
                         .IsRequired()
                         .HasConstraintName("fk_chat_participants_accounts_account_id");
 
-                    b.HasOne("KomunitasKampus.Domain.Entities.ChatRoom", "Room")
+                    b.HasOne("KomunitasKampus.Domain.Entities.ChatRoom", "ChatRoom")
                         .WithMany("Participants")
                         .HasForeignKey("RoomId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -924,7 +924,7 @@ namespace KomunitasKampus.Infrastructure.Persistence.Migrations
 
                     b.Navigation("Account");
 
-                    b.Navigation("Room");
+                    b.Navigation("ChatRoom");
                 });
 
             modelBuilder.Entity("KomunitasKampus.Domain.Entities.ChatReadStatus", b =>
@@ -936,7 +936,7 @@ namespace KomunitasKampus.Infrastructure.Persistence.Migrations
                         .IsRequired()
                         .HasConstraintName("fk_chat_read_statuses_accounts_account_id");
 
-                    b.HasOne("KomunitasKampus.Domain.Entities.ChatRoom", "Room")
+                    b.HasOne("KomunitasKampus.Domain.Entities.ChatRoom", "ChatRoom")
                         .WithMany("ReadStatuses")
                         .HasForeignKey("RoomId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -945,7 +945,7 @@ namespace KomunitasKampus.Infrastructure.Persistence.Migrations
 
                     b.Navigation("Account");
 
-                    b.Navigation("Room");
+                    b.Navigation("ChatRoom");
                 });
 
             modelBuilder.Entity("KomunitasKampus.Domain.Entities.ChatRoom", b =>

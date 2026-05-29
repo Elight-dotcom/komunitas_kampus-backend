@@ -24,6 +24,12 @@ public interface IAccountRepository
         CancellationToken cancellationToken = default
     );
 
+    Task<IReadOnlyList<Account>> SearchStudentAccountsByUsernameAsync(
+        string username,
+        int limit,
+        CancellationToken cancellationToken = default
+    );
+
     Task<bool> IsOrganizationNameTakenAsync(
         string organizationName,
         CancellationToken cancellationToken = default

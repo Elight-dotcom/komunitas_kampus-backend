@@ -1,11 +1,12 @@
 using KomunitasKampus.Domain.Entities;
+using KomunitasKampus.Domain.Enums;
 using KomunitasKampus.Domain.Interfaces;
 using KomunitasKampus.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
 namespace KomunitasKampus.Infrastructure.Repositories;
 
-public class AccountRepository : IAccountRepository
+public class AccountRepository : IAccountRepository, IChatAccountRepository
 {
     private readonly AppDbContext _context;
 
@@ -72,6 +73,27 @@ public class AccountRepository : IAccountRepository
                 account => account.Username.ToLower() == normalizedUsername,
                 cancellationToken
             );
+    }
+
+    public async Task<IReadOnlyList<Account>> SearchStudentAccountsByUsernameAsync(
+        string username,
+        int limit,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var normalizedUsername = username.Trim().ToLowerInvariant();
+        var safeLimit = Math.Clamp(limit, 1, 20);
+
+        return await _context.Accounts
+            .Include(account => account.User)
+            .AsNoTracking()
+            .Where(account =>
+                account.Role == AccountRole.Mahasiswa &&
+                account.Username.ToLower().Contains(normalizedUsername)
+            )
+            .OrderBy(account => account.Username)
+            .Take(safeLimit)
+            .ToListAsync(cancellationToken);
     }
 
     public async Task<bool> IsOrganizationNameTakenAsync(

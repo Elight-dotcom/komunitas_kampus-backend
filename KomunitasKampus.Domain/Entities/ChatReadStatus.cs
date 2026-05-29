@@ -8,7 +8,7 @@ public class ChatReadStatus : BaseEntity
 
     public DateTime LastReadAt { get; set; } = DateTime.UtcNow;
 
-    public ChatRoom? Room { get; set; }
+    public ChatRoom? ChatRoom { get; set; }
 
     public Account? Account { get; set; }
 }
